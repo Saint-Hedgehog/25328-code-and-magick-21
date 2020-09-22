@@ -30,7 +30,7 @@ const renderText = (ctx, color, text, x, y) => {
 
 const getRandomBlueColor = () => {
   const saturation = Math.floor(Math.random() * 100);
-  const color = `hsl(240, ` + saturation + `%, 50%)`;
+  const color = `hsl(240, ${saturation}%, 50%)`;
   return color;
 };
 
@@ -50,12 +50,12 @@ window.renderStatistics = (ctx, players, times) => {
   const maxTime = Math.max.apply(null, times);
   let barColor;
 
-  for (let i = 0; i < players.length; i++) {
-    if (players[i] === `Вы`) {
+  players.forEach((player) => {
+    if (player === `Вы`) {
       barColor = USER_COLOR;
     } else {
       barColor = getRandomBlueColor();
     }
-    renderBar(ctx, barColor, GAP * i * 2, (MAX_BAR_HEIGHT * times[i]) / maxTime, players[i], Math.round(times[i]));
-  }
+    renderBar(ctx, barColor, GAP * player * 2, (MAX_BAR_HEIGHT * times[player]) / maxTime, player, Math.round(times[player]));
+  });
 };
