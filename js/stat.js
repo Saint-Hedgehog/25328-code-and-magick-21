@@ -50,12 +50,12 @@ window.renderStatistics = (ctx, players, times) => {
   const maxTime = Math.max.apply(null, times);
   let barColor;
 
-  players.forEach((player) => {
+  players.forEach((player, i) => {
     if (player === `Вы`) {
       barColor = USER_COLOR;
     } else {
       barColor = getRandomBlueColor();
     }
-    renderBar(ctx, barColor, GAP * player * 2, (MAX_BAR_HEIGHT * times[player]) / maxTime, player, Math.round(times[player]));
+    renderBar(ctx, barColor, GAP * i * 2, (MAX_BAR_HEIGHT * times[i]) / maxTime, player, Math.round(times[i]));
   });
 };
