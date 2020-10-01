@@ -120,14 +120,14 @@ const setupOpen = document.querySelector(`.setup-open`);
 const setupClose = userDialog.querySelector(`.setup-close`);
 const setupUserName = userDialog.querySelector(`.setup-user-name`);
 
-const onPopupEscPress = function (evt) {
+const onPopupEscPress = (evt) => {
   if (evt.key === `Escape` && !setupUserName.matches(`:focus`)) {
     evt.preventDefault();
     closePopup();
   }
 };
 
-const openPopup = function () {
+const openPopup = () => {
   userDialog.classList.remove(`hidden`);
 
   document.addEventListener(`keydown`, onPopupEscPress);
@@ -136,7 +136,7 @@ const openPopup = function () {
   wizardFireball.addEventListener(`click`, getFireballColor);
 };
 
-const closePopup = function () {
+const closePopup = () => {
   userDialog.classList.add(`hidden`);
 
   document.removeEventListener(`keydown`, onPopupEscPress);
@@ -145,28 +145,28 @@ const closePopup = function () {
   wizardFireball.removeEventListener(`click`, getFireballColor);
 };
 
-setupOpen.addEventListener(`click`, function () {
+setupOpen.addEventListener(`click`, () => {
   openPopup();
 });
 
-setupOpen.addEventListener(`keydown`, function (evt) {
+setupOpen.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter`) {
     openPopup();
   }
 });
 
-setupClose.addEventListener(`click`, function () {
+setupClose.addEventListener(`click`, () => {
   closePopup();
 });
 
-setupClose.addEventListener(`keydown`, function (evt) {
+setupClose.addEventListener(`keydown`, (evt) => {
   if (evt.key === `Enter`) {
     closePopup();
   }
 });
 
 // Проверка заполнения имени
-setupUserName.addEventListener(`invalid`, function () {
+setupUserName.addEventListener(`invalid`, () => {
   if (setupUserName.validity.valueMissing) {
     setupUserName.setCustomValidity(`Обязательное поле`);
   } else {
@@ -174,7 +174,7 @@ setupUserName.addEventListener(`invalid`, function () {
   }
 });
 
-setupUserName.addEventListener(`input`, function () {
+setupUserName.addEventListener(`input`, () => {
   let valueLength = setupUserName.value.length;
 
   if (valueLength < MIN_NAME_LENGTH) {
@@ -191,22 +191,20 @@ const wizardCoat = userDialog.querySelector(`.wizard-coat`);
 const wizardEyes = userDialog.querySelector(`.wizard-eyes`);
 const wizardFireball = userDialog.querySelector(`.setup-fireball-wrap`);
 
-const getWizardCoatColor = function () {
+const getWizardCoatColor = () => {
   wizardCoat.style.fill = randomItem(COAT_COLORS);
   userDialog.querySelector(`input[name="coat-color"]`).value = wizardCoat.style.fill;
 };
 
-const getWizardEyesColor = function () {
+const getWizardEyesColor = () => {
   wizardEyes.style.fill = randomItem(EYES_COLORS);
   userDialog.querySelector(`input[name="eyes-color"]`).value = wizardEyes.style.fill;
 };
 
-const getFireballColor = function () {
+const getFireballColor = () => {
   const fireballColor = randomItem(FIREBALLS);
   wizardFireball.setAttribute(`style`, `background-color:` + fireballColor);
   wizardFireball.querySelector(`input`).value = fireballColor;
 };
 
-const randomItem = function (items) {
-  return items[Math.floor(Math.random() * items.length)];
-};
+const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
