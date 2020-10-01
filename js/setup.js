@@ -210,27 +210,3 @@ const getFireballColor = function () {
 const randomItem = function (items) {
   return items[Math.floor(Math.random() * items.length)];
 };
-
-// const wizardCoat = userDialog.querySelector(`.wizard-coat`);
-
-// wizardCoat.addEventListener(`click`, function () {
-//   const getRandomCoat = randomItem(COAT_COLORS);
-//   wizardCoat.style.fill = getRandomCoat;
-//   userDialog.querySelector(`[name = coat-color]`).value = getRandomCoat; // значение соответствующего скрытого инпута
-// });
-
-// const wizardEyes = userDialog.querySelector(`.wizard-eyes`);
-
-// wizardEyes.addEventListener(`click`, function () {
-//   const getRandomEyes = randomItem(EYES_COLORS);
-//   wizardEyes.style.fill = getRandomEyes;
-//   userDialog.querySelector(`[name=eyes-color]`).value = getRandomEyes; // значение соответствующего скрытого инпута
-// });
-
-// const wizardFireball = userDialog.querySelector(`.setup-fireball-wrap`);
-
-// wizardFireball.addEventListener(`click`, function () {
-//   const getRandomFireball = randomItem(FIREBALLS);
-//   wizardFireball.style.backgroundColor = getRandomFireball;
-//   userDialog.querySelector(`[name=fireball-color]`).value = getRandomFireball; // значение соответствующего скрытого инпута
-// });
