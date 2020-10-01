@@ -36,14 +36,24 @@ const EYES_COLORS = [
   `green`
 ];
 
+const FIREBALLS = [
+  `#ee4830`,
+  `#30a8ee`,
+  `#5ce6c0`,
+  `#e848d5`,
+  `#e6e848`
+];
+
 const WIZARD_NUMBER = 4;
+const MIN_NAME_LENGTH = 2;
+const MAX_NAME_LENGTH = 25;
 
 // показывает блок с персонажем
 const userDialog = document.querySelector(`.setup`);
-userDialog.classList.remove(`hidden`);
+// userDialog.classList.remove(`hidden`);
 
 // показывает блок с похожими персонажами
-userDialog.querySelector(`.setup-similar`).classList.remove(`hidden`);
+// userDialog.querySelector(`.setup-similar`).classList.remove(`hidden`);
 
 // функция получает рандомное число между min и max
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;// Максимум не включается, минимум включается
@@ -103,3 +113,124 @@ getWizardTemplate();
 // находит элемент, в который мы будем вставлять похожих магов
 userDialog.querySelector(`.setup-similar-list`).appendChild(fragment);
 
+// ---------------------------- одеть Надежду ------------------------
+
+// Открытие и закрытие модального окна
+const setupOpen = document.querySelector(`.setup-open`);
+const setupClose = userDialog.querySelector(`.setup-close`);
+const setupUserName = userDialog.querySelector(`.setup-user-name`);
+
+const onPopupEscPress = function (evt) {
+  if (evt.key === `Escape` && !setupUserName.matches(`:focus`)) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+const openPopup = function () {
+  userDialog.classList.remove(`hidden`);
+
+  document.addEventListener(`keydown`, onPopupEscPress);
+  wizardCoat.addEventListener(`click`, getWizardCoatColor);
+  wizardEyes.addEventListener(`click`, getWizardEyesColor);
+  wizardFireball.addEventListener(`click`, getFireballColor);
+};
+
+const closePopup = function () {
+  userDialog.classList.add(`hidden`);
+
+  document.removeEventListener(`keydown`, onPopupEscPress);
+  wizardCoat.removeEventListener(`click`, getWizardCoatColor);
+  wizardEyes.removeEventListener(`click`, getWizardEyesColor);
+  wizardFireball.removeEventListener(`click`, getFireballColor);
+};
+
+setupOpen.addEventListener(`click`, function () {
+  openPopup();
+});
+
+setupOpen.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener(`click`, function () {
+  closePopup();
+});
+
+setupClose.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    closePopup();
+  }
+});
+
+// Проверка заполнения имени
+setupUserName.addEventListener(`invalid`, function () {
+  if (setupUserName.validity.valueMissing) {
+    setupUserName.setCustomValidity(`Обязательное поле`);
+  } else {
+    setupUserName.setCustomValidity(``);
+  }
+});
+
+setupUserName.addEventListener(`input`, function () {
+  let valueLength = setupUserName.value.length;
+
+  if (valueLength < MIN_NAME_LENGTH) {
+    setupUserName.setCustomValidity(`Ещё ${MIN_NAME_LENGTH - valueLength} симв.`);
+  } else if (valueLength > MAX_NAME_LENGTH) {
+    setupUserName.setCustomValidity(`Удалите лишние ${valueLength - MAX_NAME_LENGTH} симв.`);
+  } else {
+    setupUserName.setCustomValidity(``);
+  }
+});
+
+// Меняем цвет мантии глаз и фаербола
+const wizardCoat = userDialog.querySelector(`.wizard-coat`);
+const wizardEyes = userDialog.querySelector(`.wizard-eyes`);
+const wizardFireball = userDialog.querySelector(`.setup-fireball-wrap`);
+
+const getWizardCoatColor = function () {
+  wizardCoat.style.fill = randomItem(COAT_COLORS);
+  userDialog.querySelector(`input[name="coat-color"]`).value = wizardCoat.style.fill;
+};
+
+const getWizardEyesColor = function () {
+  wizardEyes.style.fill = randomItem(EYES_COLORS);
+  userDialog.querySelector(`input[name="eyes-color"]`).value = wizardEyes.style.fill;
+};
+
+const getFireballColor = function () {
+  const fireballColor = randomItem(FIREBALLS);
+  wizardFireball.setAttribute(`style`, `background-color:` + fireballColor);
+  wizardFireball.querySelector(`input`).value = fireballColor;
+};
+
+const randomItem = function (items) {
+  return items[Math.floor(Math.random() * items.length)];
+};
+
+// const wizardCoat = userDialog.querySelector(`.wizard-coat`);
+
+// wizardCoat.addEventListener(`click`, function () {
+//   const getRandomCoat = randomItem(COAT_COLORS);
+//   wizardCoat.style.fill = getRandomCoat;
+//   userDialog.querySelector(`[name = coat-color]`).value = getRandomCoat; // значение соответствующего скрытого инпута
+// });
+
+// const wizardEyes = userDialog.querySelector(`.wizard-eyes`);
+
+// wizardEyes.addEventListener(`click`, function () {
+//   const getRandomEyes = randomItem(EYES_COLORS);
+//   wizardEyes.style.fill = getRandomEyes;
+//   userDialog.querySelector(`[name=eyes-color]`).value = getRandomEyes; // значение соответствующего скрытого инпута
+// });
+
+// const wizardFireball = userDialog.querySelector(`.setup-fireball-wrap`);
+
+// wizardFireball.addEventListener(`click`, function () {
+//   const getRandomFireball = randomItem(FIREBALLS);
+//   wizardFireball.style.backgroundColor = getRandomFireball;
+//   userDialog.querySelector(`[name=fireball-color]`).value = getRandomFireball; // значение соответствующего скрытого инпута
+// });

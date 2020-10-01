@@ -1,7 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Вадим Корецкий](https://up.htmlacademy.ru/javascript/21/user/25328).
-* Наставник: [Максим Прусаков](https://htmlacademy.ru/profile/hikikomori).
+* Наставник: [Юлия Корецкая](https://htmlacademy.ru/profile/id11886).
 
 ---
 
