@@ -2,10 +2,12 @@
 
 (() => {
 
-  const {setupUserName, userDialog, wizardCoat, wizardEyes, wizardFireball, setupOpen, setupClose, dialogHandle} = window.elements;
+  const {setupUserName, userDialog, wizardCoat, wizardEyes,
+    wizardFireball, setupOpen, setupClose, dialogHandle, onSuccessSubmit, onError, userForm} = window.elements;
   const {getWizardCoatColor, getWizardEyesColor, getFireballColor} = window.colorize;
   const {isEscEvent, isEnterEvent} = window.util;
   const {moveOn} = window.move;
+  const {save} = window.backend;
 
   // Модальное окно
   const onPopupEscPress = (evt) => {
@@ -52,5 +54,14 @@
   dialogHandle.addEventListener(`mousedown`, (evt) => {
     moveOn(evt);
   });
+
+  // функция отправки данных формы на сервер
+  const onFormSubmit = (evt) => {
+    save(new FormData(userForm), onSuccessSubmit, onError);
+    evt.preventDefault();
+  };
+
+  // добавление обработчика на отправку формы
+  userForm.addEventListener(`submit`, onFormSubmit);
 
 })();

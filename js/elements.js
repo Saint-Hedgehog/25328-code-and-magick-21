@@ -2,58 +2,10 @@
 
 (() => {
 
-  const FIREBALLS = [
-    `#ee4830`,
-    `#30a8ee`,
-    `#5ce6c0`,
-    `#e848d5`,
-    `#e6e848`
-  ];
-
-  const COAT_COLORS = [
-    `rgb(101, 137, 164)`,
-    `rgb(241, 43, 107)`,
-    `rgb(146, 100, 161)`,
-    `rgb(56, 159, 117)`,
-    `rgb(215, 210, 55)`,
-    `rgb(0, 0, 0)`
-  ];
-  const EYES_COLORS = [
-    `black`,
-    `red`,
-    `blue`,
-    `yellow`,
-    `green`
-  ];
-
-  const WIZARD_NAMES = [
-    `Иван`,
-    `Хуан Себастьян`,
-    `Мария`,
-    `Кристоф`,
-    `Виктор`,
-    `Юлия`,
-    `Люпита`,
-    `Вашингтон`
-  ];
-  const WIZARD_SURNAMES = [
-    `да Марья`,
-    `Верон`,
-    `Мирабелла`,
-    `Вальц`,
-    `Онопко`,
-    `Топольницкая`,
-    `Нионго`,
-    `Ирвинг`
-  ];
-
-  const WIZARD_NUMBER = 4;
+  const WIZARDS_NUMBER = 4;
 
   const MIN_NAME_LENGTH = 2;
   const MAX_NAME_LENGTH = 25;
-
-  const ESC = 27;
-  const ENTER = 13;
 
   const userDialog = document.querySelector(`.setup`);
   const wizardCoat = userDialog.querySelector(`.wizard-coat`);
@@ -67,17 +19,51 @@
 
   const dialogHandle = userDialog.querySelector(`.upload`);
 
+  const userForm = userDialog.querySelector(`.setup-wizard-form`);
+
+  // ошибка при получении или отправке данных
+  const onError = (errorMessage) => {
+    const error = document.createElement(`div`);
+    error.style = `z-index: 100; margin: 0 auto; text-align: center`;
+    error.style.width = `790px`;
+    error.style.height = `90px`;
+    error.style.paddingTop = `45px`;
+    error.style.backgroundColor = `navy`;
+    error.style.border = `5px solid white`;
+    error.style.position = `absolute`;
+    error.style.top = `180px`;
+    error.style.left = 0;
+    error.style.right = 0;
+    error.style.fontSize = `35px`;
+    error.textContent = errorMessage;
+    document.body.insertAdjacentElement(`afterbegin`, error);
+  };
+
+  // успешная отправка данных
+  const onSuccessSubmit = (response) => {
+    userDialog.classList.add(`hidden`);
+    const message = document.createElement(`div`);
+    message.style = `z-index: 100; margin: 0 auto; text-align: center`;
+    message.style.width = `792px`;
+    message.style.height = `90px`;
+    message.style.paddingTop = `40px`;
+    message.style.paddingBottom = `25px`;
+    message.style.backgroundColor = `GreenYellow`;
+    message.style.color = `black`;
+    message.style.border = `5px solid black`;
+    message.style.position = `absolute`;
+    message.style.top = `180px`;
+    message.style.left = 0;
+    message.style.right = 0;
+    message.style.fontSize = `35px`;
+    message.textContent = `${response.username}! Ваши данные успешно отправлены`;
+    document.body.insertAdjacentElement(`afterbegin`, message);
+  };
+
   window.elements = {
-    FIREBALLS,
-    COAT_COLORS,
-    EYES_COLORS,
-    WIZARD_NAMES,
-    WIZARD_SURNAMES,
-    WIZARD_NUMBER,
+    WIZARDS_NUMBER,
     MIN_NAME_LENGTH,
     MAX_NAME_LENGTH,
-    ESC,
-    ENTER,
     userDialog,
     wizardCoat,
     wizardEyes,
@@ -86,6 +72,9 @@
     setupOpen,
     setupClose,
     dialogHandle,
+    userForm,
+    onError,
+    onSuccessSubmit
   };
 
 })();
