@@ -2,27 +2,11 @@
 
 (() => {
 
-  const {WIZARD_NAMES, COAT_COLORS, EYES_COLORS, WIZARD_SURNAMES, WIZARD_NUMBER, userDialog} = window.elements;
+  const {WIZARDS_NUMBER, userDialog, onError} = window.elements;
+  const {load} = window.backend;
 
   // показывает блок с похожими персонажами
   userDialog.querySelector(`.setup-similar`).classList.remove(`hidden`);
-
-  // функция получает рандомное число между min и max
-  const randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min; // Максимум не включается, минимум включается
-
-
-  // функция отрисовки персонажей
-  const getWizards = () => {
-    const nameIndex = randomNumber(0, WIZARD_NAMES.length - 1);
-    const surnameIndex = randomNumber(0, WIZARD_SURNAMES.length - 1);
-    const coatColorIndex = randomNumber(0, COAT_COLORS.length - 1);
-    const eyesColorIndex = randomNumber(0, EYES_COLORS.length - 1);
-    return {
-      name: `${WIZARD_NAMES[nameIndex]} ${WIZARD_SURNAMES[surnameIndex]}`,
-      coatColor: COAT_COLORS[coatColorIndex],
-      eyesColor: EYES_COLORS[eyesColorIndex]
-    };
-  };
 
   // находит шаблон, который мы будем копировать.
   const similarWizardTemplate = document.querySelector(`#similar-wizard-template`).content.querySelector(`.setup-similar-item`);
@@ -30,41 +14,36 @@
   // функция создает копию шаблона и вставляет в него случайное имя с фамилией, цвет мантии и цвет глаз
   const renderWizard = (wizard) => {
     const wizardElement = similarWizardTemplate.cloneNode(true);
-    const {name, coatColor, eyesColor} = wizard;
+    const {name, colorCoat, colorEyes} = wizard;
     wizardElement.querySelector(`.setup-similar-label`).textContent = name;
-    wizardElement.querySelector(`.wizard-coat`).style.fill = coatColor;
-    wizardElement.querySelector(`.wizard-eyes`).style.fill = eyesColor;
+    wizardElement.querySelector(`.wizard-coat`).style.fill = colorCoat;
+    wizardElement.querySelector(`.wizard-eyes`).style.fill = colorEyes;
 
     return wizardElement;
   };
 
-  // вставляет в пустой массив wizards элементы из функции getWizards()
-  const generateWizards = (wizardCount) => {
-    const wizards = [];
-
-    for (let i = 0; i < wizardCount; i++) {
-      wizards.push(getWizards());
+  const shuffleArray = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
     }
-    return wizards;
+    return arr;
   };
 
-  // список похожих персонажей
-  const wizards = generateWizards(WIZARD_NUMBER);
-
-  // создает контейнер для данных
-  const fragment = document.createDocumentFragment();
-
-  // Отрисовывает шаблон в документ
-  const getWizardTemplate = () => {
-    wizards.forEach((wizard) => {
-      fragment.appendChild(renderWizard(wizard));
-    });
+  const similarListElement = userDialog.querySelector(`.setup-similar-list`);
+  // успешное получение данных: отрисовка и показ 4-х случайных похожих магов на странице
+  const onSuccessLoad = (wizardsArray) => {
+    const randomWizards = shuffleArray(wizardsArray).slice(0, WIZARDS_NUMBER);
+    const wizardsFragment = document.createDocumentFragment();
+    for (let i = 0; i < randomWizards.length; i++) {
+      wizardsFragment.appendChild(renderWizard(randomWizards[i]));
+    }
+    userDialog.querySelector(`.setup-similar`).classList.remove(`hidden`);
+    similarListElement.appendChild(wizardsFragment);
   };
-
-  getWizardTemplate();
-
-  // находит элемент, в который мы будем вставлять похожих магов
-  userDialog.querySelector(`.setup-similar-list`).appendChild(fragment);
-
+  // загрузка с сервера массива с похожими магами и обработка данных
+  load(onSuccessLoad, onError);
 
 })();
