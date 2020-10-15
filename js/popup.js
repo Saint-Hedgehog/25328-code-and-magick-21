@@ -2,63 +2,77 @@
 
 (() => {
 
-  const {setupUserName, userDialog, wizardCoat, wizardEyes,
-    wizardFireball, setupOpen, setupClose, dialogHandle, onSuccessSubmit, onError, userForm} = window.elements;
-  const {getWizardCoatColor, getWizardEyesColor, getFireballColor} = window.colorize;
-  const {isEscEvent, isEnterEvent} = window.util;
-  const {moveOn} = window.move;
+  const {setupUserName, userDialog, setupOpen, setupClose, dialogHandle, onSuccessSubmit, onError, userForm} = window.elements;
+  const {getWizardCoatColor, getWizardEyesColor, getFireballColor, wizardCoatElement, wizardEyesElement, wizardFireballElement} = window.wizard;
+  const {isEscEvent, isEnterEvent} = window.utils;
+  const {moveOn} = window.shift;
   const {save} = window.backend;
 
   // Модальное окно
-  const onPopupEscPress = (evt) => {
-    if (!setupUserName.matches(`:focus`)) {
-      isEscEvent(evt, closePopup);
-    }
-  };
-
   const openPopup = () => {
     userDialog.classList.remove(`hidden`);
 
-    document.addEventListener(`keydown`, onPopupEscPress);
-    wizardCoat.addEventListener(`click`, getWizardCoatColor);
-    wizardEyes.addEventListener(`click`, getWizardEyesColor);
-    wizardFireball.addEventListener(`click`, getFireballColor);
+    setupOpen.removeEventListener(`click`, onSetupOpenClick);
+    setupOpen.removeEventListener(`keydown`, onSetupOpenKeyDown);
+
+    setupClose.addEventListener(`click`, onSetupCloseClick);
+    setupClose.addEventListener(`keydown`, onSetupCloseKeyDownEsc);
+    setupClose.addEventListener(`keydown`, onSetupCloseKeyDownEnter);
+
+    wizardCoatElement.addEventListener(`click`, getWizardCoatColor);
+    wizardEyesElement.addEventListener(`click`, getWizardEyesColor);
+    wizardFireballElement.addEventListener(`click`, getFireballColor);
+    dialogHandle.addEventListener(`mousedown`, moveOn);
   };
 
   const closePopup = () => {
     userDialog.classList.add(`hidden`);
 
-    document.removeEventListener(`keydown`, onPopupEscPress);
-    wizardCoat.removeEventListener(`click`, getWizardCoatColor);
-    wizardEyes.removeEventListener(`click`, getWizardEyesColor);
-    wizardFireball.removeEventListener(`click`, getFireballColor);
+    setupOpen.addEventListener(`click`, onSetupOpenClick);
+    setupOpen.addEventListener(`keydown`, onSetupOpenKeyDown);
+
+    setupClose.removeEventListener(`click`, onSetupCloseClick);
+    setupClose.removeEventListener(`keydown`, onSetupCloseKeyDownEsc);
+    setupClose.removeEventListener(`keydown`, onSetupCloseKeyDownEnter);
+
+    wizardCoatElement.removeEventListener(`click`, getWizardCoatColor);
+    wizardEyesElement.removeEventListener(`click`, getWizardEyesColor);
+    wizardFireballElement.removeEventListener(`click`, getFireballColor);
+    dialogHandle.removeEventListener(`mousedown`, moveOn);
   };
 
-  setupOpen.addEventListener(`click`, () => {
+  const onSetupOpenClick = () => {
     openPopup();
-  });
+  };
 
-  setupOpen.addEventListener(`keydown`, (evt) => {
+  const onSetupOpenKeyDown = (evt) => {
     isEnterEvent(evt, openPopup);
-  });
+  };
 
-  setupClose.addEventListener(`click`, () => {
+  setupOpen.addEventListener(`click`, onSetupOpenClick);
+  setupOpen.addEventListener(`keydown`, onSetupOpenKeyDown);
+
+  const onSetupCloseClick = () => {
     closePopup();
-  });
+  };
 
-  setupClose.addEventListener(`keydown`, (evt) => {
-    isEnterEvent(evt, closePopup);
-  });
+  const onSetupCloseKeyDownEnter = (evt) => {
+    if (setupClose.matches(`:focus`)) {
+      isEnterEvent(evt, closePopup);
+    }
+  };
 
-  // Перетаскивание модального окна
-  dialogHandle.addEventListener(`mousedown`, (evt) => {
-    moveOn(evt);
-  });
+  const onSetupCloseKeyDownEsc = (evt) => {
+    if (!setupUserName.matches(`:focus`)) {
+      isEscEvent(evt, closePopup);
+    }
+  };
 
   // функция отправки данных формы на сервер
   const onFormSubmit = (evt) => {
     save(new FormData(userForm), onSuccessSubmit, onError);
     evt.preventDefault();
+    closePopup();
   };
 
   // добавление обработчика на отправку формы
