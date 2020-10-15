@@ -33,7 +33,7 @@
     }
   };
 
-  const updateWizards = () => {
+  const updateWizards = window.debounce(() => {
     window.render(wizards.sort((left, right) => {
       let rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
@@ -41,16 +41,16 @@
       }
       return rankDiff;
     }));
-  };
+  });
 
   setEyesChangeHandler((color) => {
     eyesColor = color;
-    window.debounce(updateWizards);
+    updateWizards();
   });
 
   setCoatChangeHandler((color) => {
     coatColor = color;
-    window.debounce(updateWizards);
+    updateWizards();
   });
 
   const successHandler = (data) => {
