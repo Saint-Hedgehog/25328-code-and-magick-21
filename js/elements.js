@@ -33,19 +33,19 @@
     message.textContent = `${response.username}! Ваши данные успешно отправлены`;
     document.body.insertAdjacentElement(`afterbegin`, message);
 
-    document.addEventListener(`click`, closeSuccessMessage);
+    document.addEventListener(`click`, onCloseSuccessMessage);
     document.addEventListener(`keydown`, onSuccessMessageKeyDown);
   };
 
   const onSuccessMessageClick = () => {
-    closeSuccessMessage();
+    onCloseSuccessMessage();
   };
 
   const onSuccessMessageKeyDown = (evt) => {
-    isEscEvent(evt, closeSuccessMessage);
+    isEscEvent(evt, onCloseSuccessMessage);
   };
 
-  const closeSuccessMessage = () => {
+  const onCloseSuccessMessage = () => {
     const successMessage = document.querySelector(`.success-message`);
     successMessage.remove();
 

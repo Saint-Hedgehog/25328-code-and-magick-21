@@ -32,7 +32,7 @@
 
   const {getRandomElement} = window.utils;
 
-  let wizard = {
+  const wizard = {
     onEyesChange() { },
     onCoatChange() { }
   };
@@ -40,21 +40,21 @@
   const wizardElement = document.querySelector(`.setup-wizard`);
 
   const wizardCoatElement = wizardElement.querySelector(`.wizard-coat`);
-  const getWizardCoatColor = (evt) => {
+  const onWizardCoatColorGet = (evt) => {
     const newColor = getRandomElement(COAT_COLORS);
     evt.target.style.fill = newColor;
     wizard.onCoatChange(newColor);
   };
 
   const wizardEyesElement = wizardElement.querySelector(`.wizard-eyes`);
-  const getWizardEyesColor = (evt) => {
+  const onWizardEyesColorGet = (evt) => {
     const newColor = getRandomElement(EYES_COLORS);
     evt.target.style.fill = newColor;
     wizard.onEyesChange(newColor);
   };
 
   const wizardFireballElement = document.querySelector(`.setup-fireball-wrap`);
-  const getFireballColor = () => {
+  const onWizardFireballColorGet = () => {
     const newColor = getRandomElement(FIREBALL_COLORS);
     wizardFireballElement.setAttribute(`style`, `background-color:` + newColor);
     wizardFireballElement.querySelector(`input`).value = newColor;
@@ -67,9 +67,9 @@
     setEyesChangeHandler(cb) {
       wizard.onEyesChange = cb;
     },
-    getWizardCoatColor,
-    getWizardEyesColor,
-    getFireballColor,
+    onWizardCoatColorGet,
+    onWizardEyesColorGet,
+    onWizardFireballColorGet,
     wizardCoatElement,
     wizardEyesElement,
     wizardFireballElement,

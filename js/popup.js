@@ -3,7 +3,7 @@
 (() => {
 
   const {setupUserName, userDialog, setupOpen, setupClose, dialogHandle, onSuccessSubmit, onError, userForm} = window.elements;
-  const {getWizardCoatColor, getWizardEyesColor, getFireballColor, wizardCoatElement, wizardEyesElement, wizardFireballElement} = window.wizard;
+  const {onWizardCoatColorGet, onWizardEyesColorGet, onWizardFireballColorGet, wizardCoatElement, wizardEyesElement, wizardFireballElement} = window.wizard;
   const {isEscEvent, isEnterEvent} = window.utils;
   const {moveOn} = window.shift;
   const {save} = window.backend;
@@ -19,9 +19,9 @@
     setupClose.addEventListener(`keydown`, onSetupCloseKeyDownEsc);
     setupClose.addEventListener(`keydown`, onSetupCloseKeyDownEnter);
 
-    wizardCoatElement.addEventListener(`click`, getWizardCoatColor);
-    wizardEyesElement.addEventListener(`click`, getWizardEyesColor);
-    wizardFireballElement.addEventListener(`click`, getFireballColor);
+    wizardCoatElement.addEventListener(`click`, onWizardCoatColorGet);
+    wizardEyesElement.addEventListener(`click`, onWizardEyesColorGet);
+    wizardFireballElement.addEventListener(`click`, onWizardFireballColorGet);
     dialogHandle.addEventListener(`mousedown`, moveOn);
   };
 
@@ -35,9 +35,9 @@
     setupClose.removeEventListener(`keydown`, onSetupCloseKeyDownEsc);
     setupClose.removeEventListener(`keydown`, onSetupCloseKeyDownEnter);
 
-    wizardCoatElement.removeEventListener(`click`, getWizardCoatColor);
-    wizardEyesElement.removeEventListener(`click`, getWizardEyesColor);
-    wizardFireballElement.removeEventListener(`click`, getFireballColor);
+    wizardCoatElement.removeEventListener(`click`, onWizardCoatColorGet);
+    wizardEyesElement.removeEventListener(`click`, onWizardEyesColorGet);
+    wizardFireballElement.removeEventListener(`click`, onWizardFireballColorGet);
     dialogHandle.removeEventListener(`mousedown`, moveOn);
   };
 

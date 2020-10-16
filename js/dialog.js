@@ -53,14 +53,14 @@
     updateWizards();
   });
 
-  const successHandler = (data) => {
+  const onSuccess = (data) => {
     wizards = data;
     updateWizards();
   };
 
-  const errorHandler = (errorMessage) => {
+  const onError = (errorMessage) => {
     window.utils.createErrorMessage(errorMessage);
   };
 
-  load(successHandler, errorHandler);
+  load(onSuccess, onError);
 })();
