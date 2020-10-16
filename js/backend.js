@@ -5,7 +5,7 @@
   const statusCode = {
     OK: 200
   };
-  const TIMEOUT_IN_MS = 1000;
+  const TIMEOUT_IN_MS = 3000;
   const URL_TO_GET = `https://javascript.pages.academy/code-and-magick/data`;
   const URL_TO_POST = `https://javascript.pages.academy/code-and-magick`;
   const GET = `GET`;
