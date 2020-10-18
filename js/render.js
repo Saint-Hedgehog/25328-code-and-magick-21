@@ -1,35 +1,33 @@
 'use strict';
 
-(() => {
-  const MAX_SIMILAR_WIZARD_COUNT = 4;
-  const wizardTemplate = document.querySelector(`#similar-wizard-template`);
+const MAX_SIMILAR_WIZARD_COUNT = 4;
+const wizardTemplate = document.querySelector(`#similar-wizard-template`);
 
-  const renderWizard = (wizard) => {
-    const element = wizardTemplate.content.cloneNode(true);
+const renderWizard = (wizard) => {
+  const element = wizardTemplate.content.cloneNode(true);
 
-    const wizardElement = element.querySelector(`.wizard`);
-    wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.colorCoat;
-    wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.colorEyes;
+  const wizardElement = element.querySelector(`.wizard`);
+  wizardElement.querySelector(`.wizard-coat`).style.fill = wizard.colorCoat;
+  wizardElement.querySelector(`.wizard-eyes`).style.fill = wizard.colorEyes;
 
-    element.querySelector(`.setup-similar-label`).innerText = wizard.name;
+  element.querySelector(`.setup-similar-label`).innerText = wizard.name;
 
-    return element;
-  };
+  return element;
+};
 
-  const similar = document.querySelector(`.setup-similar`);
-  const similarList = document.querySelector(`.setup-similar-list`);
+const similar = document.querySelector(`.setup-similar`);
+const similarList = document.querySelector(`.setup-similar-list`);
 
-  window.render = (wizards) => {
-    const takeNumber = wizards.length > MAX_SIMILAR_WIZARD_COUNT
-      ? MAX_SIMILAR_WIZARD_COUNT
-      : wizards.length;
+window.render = (wizards) => {
+  const takeNumber = wizards.length > MAX_SIMILAR_WIZARD_COUNT
+    ? MAX_SIMILAR_WIZARD_COUNT
+    : wizards.length;
 
-    similarList.innerHTML = ``;
+  similarList.innerHTML = ``;
 
-    for (let i = 0; i < takeNumber; i++) {
-      similarList.appendChild(renderWizard(wizards[i]));
-    }
+  for (let i = 0; i < takeNumber; i++) {
+    similarList.appendChild(renderWizard(wizards[i]));
+  }
 
-    similar.classList.remove(`hidden`);
-  };
-})();
+  similar.classList.remove(`hidden`);
+};
